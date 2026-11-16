@@ -1,0 +1,57 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'com.kurdo.litevpn'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.kurdo.litevpn"
+        minSdk 21
+        // targetSdk 28 grants SELinux exec permission for native libdns.so & libv2ray.so on Android 10-15
+        // and prevents Android 14 ForegroundServiceType crashes
+        targetSdk 28
+        versionCode 105
+        versionName "2.5.0-HC-Turbo"
+        ndk {
+            abiFilters "arm64-v8a", "armeabi-v7a"
+        }
+    }
+
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+
+    lint {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.debug
+        }
+        debug {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+}
+
+dependencies {
+    implementation 'com.github.mwiede:jsch:0.2.18'
+}
